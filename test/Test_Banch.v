@@ -1,11 +1,13 @@
 `timescale 1ns / 1ps
 
+
+
 module Test_Banch;
 
-    // Параметры
-    reg clk;  // Тактовый сигнал
+   
+    reg clk;  
 
-    // Сигналы процессора
+    
     wire [31:0] pc_imem, imem_out, instruction, RD1, RD, res_alu, 
                 RD2, WD3, imm_b, imm_i, imm_j, imm_s, mux5_alu, 
                 in2_mux5, mux3_alu;
@@ -16,50 +18,61 @@ module Test_Banch;
     wire jal, jalr, enpc, b, rfwe, comp, mewe, ws;
     wire [1:0] scrA;
 
-    // Создание экземпляра процессора
+   
     Processor uut (
         .clk(clk)
+        
     );
 
-    // Генерация тактового сигнала
+    
     initial begin
         clk = 0;
-        forever #5 clk = ~clk;  // Тактовый сигнал с периодом 10ns
+        forever #5 clk = ~clk;  
     end
 
-    // Процесс инициализации и применения тестов
+ 
     initial begin
-        // Инициализация сигналов
+        
         $display("Starting simple test...");
+        $dumpfile("wavefrom.vcd");
+        $dumpvars(0, Test_Banch);
+       
+        $readmemh("instruction/instruction.hex", uut.imem.memory);  
 
-        // Подготовка и загрузка инструкций из файла
-        // Убедитесь, что файл "instruction.hex" существует и находится в каталоге симулятора
-        $readmemh("instruction.hex", uut.imem.memory);  // Загружаем инструкции в память
+        
+        #0;  // Задержка 
 
-        // Добавляем задержку, чтобы процессор успел начать работу
-        #110;  // Задержка 10 тактов
+        
+        $monitor("Time = %0t | PC = %b | ALU inputs: a = %b, b = %b, control = %b, result = %b", 
+                 $time, uut.pc_imem, uut.mux3_alu, uut.mux5_alu, uut.aop, uut.res_alu);
 
-        // Проверка на выходе ALU
-        $monitor("ALU inputs: a = %b, b = %b, control = %b, result = %b", ///////////////////////////////////////////////////
-                 uut.mux3_alu, uut.mux5_alu, uut.aop, uut.res_alu);
-	//$writememh("memory_dump.txt", data_memory);
-        //$monitor("ALU inputs: func3 = %b, func7 = %b, control = %b, result = %b", 
-                // uut.imem_out[14:12], uut.imem_out[31:25], uut.aop, uut.res_alu);
-        // Пример проверки состояния: если PC не равен нулю, то процессор начал работать
+ 
         if (uut.pc_imem != 32'h0) begin
-            $display("Processor is running correctly, PC = %h", uut.pc_imem);
+            $display("Processor is running correctly, PC = %b", uut.pc_imem);
         end else begin
             $display("Processor is not running correctly.");
         end
 
-        // Завершаем тест
-        #50; // Подождем немного для выполнения инструкций
-        $stop;  // Остановка симуляции
+        
+        #50; 
+        $display("State after 1st instruction:");
+        $display("PC = %b, ALU Result = %h", uut.pc_imem, uut.res_alu);
+        
+        #50;  
+        $display("State after 2nd instruction:");
+        $display("PC = %b, ALU Result = %h", uut.pc_imem, uut.res_alu);
+
+        #50;  
+        $display("State after 3rd instruction:");
+        $display("PC = %b, ALU Result = %h", uut.pc_imem, uut.res_alu);
+
+        
+        $stop;  
     end
 
-    // Завершение симуляции
+    
     initial begin
-        #1000; // Время симуляции (например, 1000ns)
+        #1000; 
         $finish;
     end
 endmodule

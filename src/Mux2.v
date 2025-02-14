@@ -6,10 +6,10 @@ module Mux2 #(parameter WIDTH = 32) (
 );
 
     always @(*) begin
-        if (sel)               
-            out = in1;
-        else                   
-            out = in0;
+        case(sel)
+        1'b0: out = in0;
+        1'b1: out = in1;
+        endcase    
     end
 
 endmodule

@@ -16,5 +16,8 @@ module Register_File#(parameter OUT_WIDTH = 32)(
     end
     initial begin
         registers[0] = 32'b0;
+        registers[1] = 32'b1;
+        registers[2] = 32'b1;
+        registers[3] = 32'b0;
     end
 endmodule

@@ -5,8 +5,9 @@ module ALU(
     output zero
 );
     assign zero = (res == 32'b0);  // Флаг нуля: равен ли результат нулю?
-
+   
     always @(*) begin
+        res = 32'b0;
         case(control)
             4'b0000: res = a & b;              // AND
             4'b0001: res = a | b;              // OR

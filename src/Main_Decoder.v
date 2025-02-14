@@ -184,18 +184,18 @@ module Main_Decoder(
                 enpc = 1; // Установить флаг для перехода
             end
 
-            default: begin
-                aop = 4'b0000;
-                rfwe = 0;
-                mewe = 0;
-                ws = 0;
-                scrA = 0;
-                scrB = 0;
-                jalr = 0;
-                enpc = 0;
-                jal = 0;
-                b = 0;
-            end
+            // default: begin
+            //     aop = 4'b0000;
+            //     rfwe = 0;
+            //     mewe = 0;
+            //     ws = 0;
+            //     scrA = 0;
+            //     scrB = 0;
+            //     jalr = 0;
+            //     enpc = 0;
+            //     jal = 0;
+            //     b = 0;
+            // end
         endcase
     end
 endmodule

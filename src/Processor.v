@@ -1,6 +1,6 @@
 `include "Main_Decoder.v"
 `include "PC.v"
-`include "Instruction_memory.v"
+`include "Instruction_Memory.v"
 `include "Register_File.v"
 `include "SE_B.v"
 `include "ALU.v"
@@ -62,7 +62,7 @@ module Processor(
     );
 
     // Подключение памяти инструкций
-    Instruction_memory imem(
+    Instruction_Memory imem(
         .addr(pc_imem),
         .data_out(imem_out)
     );
@@ -132,7 +132,7 @@ module Processor(
     ) mux3_inst (
         .in0(RD1),
         .in1(pc_imem), ///что
-        .in2(32'd0),
+        .in2(32'b0),
         .scrA(scrA),
         .out(mux3_alu)      
     );

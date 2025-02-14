@@ -5,8 +5,11 @@ module PC(
 );
     wire [31:0] mux2_pc, addr_control_mux2, pc_addr_control, const_4, mux2_imm_j_imm_b, adrr_input;
     wire c;
-    assign const_4 = 32'd4;
+    assign const_4 = 32'b00000000000000000000000000000100;
     assign c = jal |(comp & b);
+    initial begin
+        pc = 32'b0;
+    end
     Mux2  mux_4_mux2(
         .in0(const_4),        
         .in1(mux2_imm_j_imm_b),       
@@ -31,13 +34,19 @@ module PC(
         .out(mux2_pc)        
     );
     //pc
-    always @(posedge clk or negedge clk) begin
-        if (~clk) begin  // условие сброса (положительный фронт)
-            pc <= 32'b0;  // Устанавливаем PC в 0 при сбросе
-        end else if (enpc) begin
-            pc <= mux2_pc;  // В противном случае обновляем PC
+    // always @(posedge clk or negedge clk) begin
+    //     if (~clk) begin  // условие сброса (положительный фронт)
+    //         pc <= 32'b0;  // Устанавливаем PC в 0 при сбросе
+    //     end else if (enpc) begin
+    //         pc <= mux2_pc;  // В противном случае обновляем PC
+    //     end
+    // end
+     always @(posedge clk) begin
+        if (enpc) begin
+            pc <= mux2_pc;  // Переход по адресу
+        end else begin
+            pc <= pc + const_4;  // Автоматическое увеличение на 4 для обычных инструкций
         end
     end
-
 
 endmodule
