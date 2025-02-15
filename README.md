@@ -62,7 +62,7 @@ https://github.com/DaniilLeynov/rv32-singlecycle.git
 **Перейдите в директорию проекта:**
 
 ```bash
-cd cd riscv-singlecycle\test
+cd riscv-singlecycle\test
 ```
 
 **Запустите симуляцию:**
